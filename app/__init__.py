@@ -4,7 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 import logging
-from logging.handlers import SMTPHandler
+from logging.handlers import SMTPHandler, RotatingFileHandler
+import os
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -39,6 +40,6 @@ if not app.debug:
         app.logger.addHandler(file_handler)
 
         app.logger.setLevel(logging.INFO)
-        app.loger.info('JournalPro Startup')
+        app.logger.info('JournalPro Startup')
 
 from app import routes, models, errors
