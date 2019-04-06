@@ -12,3 +12,5 @@ class Config(object):
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['pkinsella1@gmail.com']
+
+print("{}", Config.SQLALCHEMY_DATABASE_URI)
