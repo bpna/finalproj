@@ -9,7 +9,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    entries = db.relationship('Entry', backref='author', lazy='dynamic')
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -27,14 +27,23 @@ class User(UserMixin, db.Model):
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
                 digest, size)
 
-class Post(db.Model):
+    def last_three_entries(self):
+        return Entry.query.filter_by(user_id=self.id)
+#        return Entry.query.order_by(Entry.time.desc()).filter(
+#                Entry.user_id == self.id).limit(3).all()
+
+#    def my_posts(self):
+#        return Entry.query.
+
+class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    title = db.Column(db.String(255), index=True, default='untitled')
+    entry = db.Column(db.Text)
+    time = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return '<Post {}>'.format(self.body)
+        return '<Entry {}\n{}\n\n{}>\n'.format(self.time, self.title, self.entry)
 
 @login.user_loader
 def load_user(id):

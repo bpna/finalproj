@@ -4,43 +4,37 @@ from werkzeug.urls import url_parse
 from datetime import datetime
 from app import app
 from app import db
-from app.forms import RegistrationForm
-from app.forms import LoginForm
-from app.forms import EditProfileForm
-from app.models import User
-
+from app.forms import RegistrationForm, LoginForm, EditProfileForm, WriteForm
+from app.models import User, Entry
 
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
-    posts = [
-            {
-                'author': {'username': 'Karl'},
-                'body': 'I love running!'
-                },
-            {
-                'author': {'username': 'Lilty'},
-                'body': 'You spelled my name wrong!'
-                },
-            ]
-    return render_template('index.html', title='Home', posts=posts)
+    if current_user.is_authenticated:
+        return redirect(url_for('write', username=current_user.username))
+    
+    return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
+
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
+
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
+
         return redirect(next_page)
+
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/logout')
@@ -52,6 +46,7 @@ def logout():
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
+
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
@@ -60,17 +55,51 @@ def register():
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
+
     return render_template('register.html', title='Register', form=form)
 
-@app.route('/user/<username>')
+
+@app.route('/user/<username>', methods=['GET', 'POST'])
 @login_required
 def user(username):
+    entries = current_user.last_three_entries()
+#    page = request.args.get('page', 1, type=int)
+#    entries = 
+    return render_template('user_page.html', user=current_user, entries=entries)
+
+@app.route('/user/write/<username>', methods=['GET', 'POST'])
+@login_required
+def write(username):
     user = User.query.filter_by(username=username).first_or_404()
-    posts = [
-            {'author': user, 'body': 'Test post #1'},
-            {'author': user, 'body': 'Test post #2'}
-            ]
-    return render_template('user.html', user=user, posts=posts)
+    form = WriteForm()
+    if form.validate_on_submit():
+        entry = Entry(title=form.title.data, entry=form.entry.data, author=user)
+        db.session.add(entry)
+        db.session.commit()
+
+    entries = current_user.last_three_entries()
+
+    return render_template('write.html', title='Write', user=user, form=form,
+                            entries=entries)
+
+@app.route('/read/<id>')
+@login_required
+def read(id):
+    entry = Entry.query.get(id)
+    return render_template('entry.html', entry=entry)
+
+@app.route('/follow/<username>')
+@login_required
+def follow(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash('User {} not found.'.format(username))
+        return redirect(url_for('index'))
+
+# view an entry of your own
+
+# @app.route('/user/<username>/<entry>')
+
 
 @app.before_request
 def before_request():
@@ -93,3 +122,4 @@ def edit_profile():
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
+

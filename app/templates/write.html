@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>Hi {{ user.username }}, what would you like to write today?</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.title.label }}<br>
+            {{ form.title(size=80) }}<br>
+        </p>
+        <p>
+            {{ form.entry.label }}<br>
+            {{ form.entry(cols=80, rows=20) }}<br>
+            {% for error in form.entry.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+    {% for entry in entries %}
+        {% include '_entry.html' %}
+    {% endfor %}
+{% endblock %}
