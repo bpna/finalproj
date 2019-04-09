@@ -17,4 +17,7 @@
         </p>
         <p>{{ form.submit() }}</p>
     </form>
+    {% for entry in entries %}
+        {% include '_entry.html' %}
+    {% endfor %}
 {% endblock %}

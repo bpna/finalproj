@@ -12,7 +12,7 @@ from app.models import User, Entry
 @login_required
 def index():
     if current_user.is_authenticated:
-        return redirect(url_for('user', username=current_user.username))
+        return redirect(url_for('write', username=current_user.username))
     
     return redirect(url_for('login'))
 
@@ -62,31 +62,31 @@ def register():
 @app.route('/user/<username>', methods=['GET', 'POST'])
 @login_required
 def user(username):
-    user = User.query.filter_by(username=username).first_or_404()
-    form = WriteForm()
+    entries = current_user.last_three_entries()
+#    page = request.args.get('page', 1, type=int)
+#    entries = 
+    return render_template('user_page.html', user=current_user, entries=entries)
 
-    if form.validate_on_submit():
-        entry = Entry(title=form.title.data, entry=form.entry.data)
-        db.session.add(entry)
-        db.session.commit()
-
-    return render_template('write.html', title='Write', user=user, form=form)
-
-@app.route('/user/write>', methods=['GET', 'POST'])
+@app.route('/user/write/<username>', methods=['GET', 'POST'])
 @login_required
-def write():
+def write(username):
     user = User.query.filter_by(username=username).first_or_404()
     form = WriteForm()
-
     if form.validate_on_submit():
-        entry = Entry(title=form.title.data, entry=form.entry.data)
+        entry = Entry(title=form.title.data, entry=form.entry.data, author=user)
         db.session.add(entry)
         db.session.commit()
 
-    return render_template('write.html', title='Write', user=user, form=form)
+    entries = current_user.last_three_entries()
 
+    return render_template('write.html', title='Write', user=user, form=form,
+                            entries=entries)
 
-
+@app.route('/read/<id>')
+@login_required
+def read(id):
+    entry = Entry.query.get(id)
+    return render_template('entry.html', entry=entry)
 
 @app.route('/follow/<username>')
 @login_required
