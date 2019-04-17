@@ -27,7 +27,7 @@ class User(UserMixin, db.Model):
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
                 digest, size)
 
-    def last_three_entries(self):
+    def all_entries(self):
         return Entry.query.filter_by(user_id=self.id)
 #        return Entry.query.order_by(Entry.time.desc()).filter(
 #                Entry.user_id == self.id).limit(3).all()

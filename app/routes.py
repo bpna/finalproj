@@ -37,7 +37,7 @@ def read(username, id):
 @app.route('/user/<username>', methods=['GET', 'POST'])
 @login_required
 def user(username):
-    entries = current_user.last_three_entries()
+    entries = current_user.all_entries()
     return render_template('user_page.html', user=current_user, entries=entries)
 
 @app.route('/user/write/<username>', methods=['GET', 'POST'])
@@ -50,7 +50,7 @@ def write(username):
         db.session.add(entry)
         db.session.commit()
 
-    entries = current_user.last_three_entries()
+    entries = current_user.all_entries()
     return render_template('write.html', title='Write', user=user, form=form,
                             entries=entries)
 
