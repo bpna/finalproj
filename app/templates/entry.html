@@ -3,7 +3,7 @@
 {% block app_content %}
     <h1>{{ entry.title }}</h1>
     <h2>By: {{ entry.author.username }}</h2>
-    <p>{{ entry.time }}</p>
+    <p>{{ moment(entry.time).format('LLLL') }}</p>
     <p>{{ entry.entry }}</p>
 {% endblock %}
 
