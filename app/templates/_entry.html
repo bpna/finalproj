@@ -1,7 +1,7 @@
 <table>
     <tr valign="top">
         <td>
-            <p><a href="{{ url_for('read', id=entry.id) }}">{{ entry.time }}</a></p>
+            <p><a href="{{ url_for('read', username=entry.author.username, id=entry.id) }}">{{ entry.time }}</a></p>
             <p>{{ entry.title }}</p>
             <p>{{ entry.entry }}</p>
         </td>

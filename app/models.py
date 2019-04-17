@@ -32,8 +32,8 @@ class User(UserMixin, db.Model):
 #        return Entry.query.order_by(Entry.time.desc()).filter(
 #                Entry.user_id == self.id).limit(3).all()
 
-#    def my_posts(self):
-#        return Entry.query.
+    def entry(self, key):
+        return entries
 
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
