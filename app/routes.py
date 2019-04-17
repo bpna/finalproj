@@ -29,6 +29,9 @@ def nowit(username, id):
 @login_required
 def read(username, id):
     entry = Entry.query.get(id)
+    author = entry.author.username
+    if username != author:
+        return redirect(url_for('user', username=current_user.username))
     return render_template('entry.html', entry=entry)
 
 @app.route('/user/<username>', methods=['GET', 'POST'])
