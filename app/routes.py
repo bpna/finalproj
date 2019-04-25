@@ -61,7 +61,7 @@ def edit(username, id):
     form = WriteForm()
     entry = Entry.query.get(id)
     author = entry.author.username
-    if username != author:
+    if username != author or username != current_user.username:
         return redirect(url_for('user', username=current_user.username))
     if form.validate_on_submit():
         entry.set_title(form.title.data)
