@@ -40,7 +40,7 @@ def user(username):
     entries = current_user.all_entries()
     return render_template('user_page.html', user=current_user, entries=entries)
 
-@app.route('/user/write/<username>', methods=['GET', 'POST'])
+@app.route('/write/<username>', methods=['GET', 'POST'])
 @login_required
 def write(username):
     user = User.query.filter_by(username=username).first_or_404()
@@ -53,6 +53,26 @@ def write(username):
     entries = current_user.all_entries()
     return render_template('write.html', title='Write', user=user, form=form,
                             entries=entries)
+
+@app.route('/edit/<username>/<id>', methods=['GET', 'POST'])
+@login_required
+def edit(username, id):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = WriteForm()
+    entry = Entry.query.get(id)
+    author = entry.author.username
+    if username != author:
+        return redirect(url_for('user', username=current_user.username))
+    if form.validate_on_submit():
+        entry.set_title(form.title.data)
+        entry.set_entry(form.entry.data)
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('read', username=current_user.username, id=id))
+    elif request.method == 'GET':
+        form.title.data = entry.title
+        form.entry.data = entry.entry
+    return render_template('edit.html', title='Edit Entry', form=form)
 
 @app.route('/follow/<username>')
 @login_required

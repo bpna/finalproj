@@ -45,6 +45,12 @@ class Entry(db.Model):
     def __repr__(self):
         return '<Entry {}\n{}\n\n{}>\n'.format(self.time, self.title, self.entry)
 
+    def set_title(self, new_title):
+        self.title = new_title
+
+    def set_entry(self, new_entry):
+        self.entry = new_entry
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
