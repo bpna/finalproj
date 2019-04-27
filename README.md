@@ -20,7 +20,8 @@ TODOs:
 * the Entry model should have a "last modified" field
 * the Entry model has an entry field which should be a content field instead
 * create description at /index of site's purpose, with register and login buttons
-* add DELETE button to entries
+* ~~add DELETE button to entries~~
+* add confirmation pop-up when DELETE button is pressed
 * change DB model to add association table for user follower/followed relationship
 * create page to 
 * add MAKE PUBLIC button to entries

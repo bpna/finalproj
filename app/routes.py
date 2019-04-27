@@ -61,7 +61,7 @@ def edit(username, id):
     form = WriteForm()
     entry = Entry.query.get(id)
     author = entry.author.username
-    if username != author or username != current_user.username:
+    if username != current_user.username or username != author:
         return redirect(url_for('user', username=current_user.username))
     if form.validate_on_submit():
         entry.set_title(form.title.data)
@@ -73,6 +73,22 @@ def edit(username, id):
         form.title.data = entry.title
         form.entry.data = entry.entry
     return render_template('edit.html', title='Edit Entry', form=form)
+
+@app.route('/delete/<username>/<id>')
+@login_required
+def delete(username, id):
+    user = User.query.filter_by(username=username).first_or_404()
+    entry = Entry.query.get(id)
+    author = entry.author.username
+    if username != current_user.username or username != author:
+        return redirect(url_for('user', username=current_user.username))
+    db.session.delete(entry)
+    db.session.commit()
+    if entry.title:
+        flash('Entry "{}" has been deleted'.format(entry.title))
+    else:
+        flash('Entry deleted')
+    return redirect(url_for('user', username=current_user.username))
 
 @app.route('/follow/<username>')
 @login_required
