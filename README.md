@@ -4,7 +4,7 @@ Tufts CS Master's Independent Study project
 See this application in production at *www.thoughtkeeper.me*
 
 Features in Development:
-~~Add delete and edit entry options to basic CRUD model for entries~~
+* Add delete and edit entry options to basic CRUD model for entries
 * File upload feature, text box for entry time (later dropdown)
 * Style selector. Program applies separate CSS styling options for an entry
 * LaTeX rendering option
