@@ -6,7 +6,7 @@
     <p>{{ moment(entry.time).format('LLLL') }}</p>
     <p>{{ entry.entry }}</p>
     {% if entry.author == current_user %}
-        <a href={{ url_for('edit', username=entry.author.username, id=entry.id) }}>EDIT THIS ENTRY</a>
+        <a class="btn btn-primary" href={{ url_for('edit', username=entry.author.username, id=entry.id) }} role="button">EDIT THIS ENTRY</a>
     {% endif %}
 {% endblock %}
 
