@@ -66,6 +66,7 @@ def edit(username, id):
     if form.validate_on_submit():
         entry.set_title(form.title.data)
         entry.set_entry(form.entry.data)
+        entry.was_edited()
         db.session.commit()
         flash('Your changes have been saved.')
         return redirect(url_for('read', username=current_user.username, id=id))

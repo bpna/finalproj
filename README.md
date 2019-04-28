@@ -16,14 +16,16 @@ TODOs:
 * ~~do not display EDIT THIS ENTRY button when current\_user != author~~
 * add entry CSS so each entry is displayed in its own text box
 * ~~the EDIT THIS ENTRY link for an entry should be a button, not a link~~
-* the Entry model "time" field should be renamed to "created"
-* the Entry model should have a "last modified" field
+* ~~the Entry model should have a "last modified" field~~
+* ~~editing an entry should change it's last modified timestamp in app/routes.py~~
+* viewing an entry should show the time it was created and the time last modified
 * the Entry model has an entry field which should be a content field instead
 * create description at /index of site's purpose, with register and login buttons
 * ~~add DELETE button to entries~~
 * add confirmation pop-up when DELETE button is pressed
 * change DB model to add association table for user follower/followed relationship
-* create page to 
+* create search option for finding users by username
+* create page to see followed users
 * add MAKE PUBLIC button to entries
 * /user/<username> should display only entries marked as PUBLIC
 
