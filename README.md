@@ -11,7 +11,7 @@ Features in Development:
 * File upload feature, text box/dropdown for entry time
 
 TODOs:
-* /index should display a short description of the site instead of being a simple redirect
+* /index should display a description of the site's purpose, with register and login buttons
 * ~~After submitting an entry, the form should be cleared on /write/<username>~~
 * ~~Add EDIT THIS ENTRY button to entries~~
 * ~~The EDIT THIS ENTRY link for an entry should be a button, not a link~~
@@ -22,11 +22,9 @@ TODOs:
 * ~~Do not display EDIT THIS ENTRY button when current\_user != author~~
 * If a user has no posts, their user\_page should say so instead of listing 0 entries
 * User.all\_entries() should order entries returned by time last modified
-* Style entries to display within a borderless page
-* The Entry model has an entry field which should be a content field instead
-* Create description at /index of site's purpose, with register and login buttons
-* ~~Add DELETE button to entries~~
 * The user should have the option to display entries in order of date created, last modified, or most frequently accessed
+* Style entries to display within a borderless page
+* ~~Add DELETE button to entries~~
 * Add confirmation pop-up when DELETE button is pressed
 * Change DB model to add association table for user follower/followed relationship
 * Create search option for finding users by username
