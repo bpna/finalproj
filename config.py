@@ -13,3 +13,4 @@ class Config(object):
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['pkinsella1@gmail.com']
     ENTRIES_PER_PAGE = 6
+    LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')

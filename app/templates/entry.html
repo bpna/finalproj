@@ -2,7 +2,15 @@
 
 {% block app_content %}
     <h1>{{ entry.title }}</h1>
-    <p>{{ entry.time }}</p>
-    <p>{{ entry.entry }}</p>
+    <h2>By: {{ entry.author.username }}</h2>
+    <p>Created: {{ moment(entry.created).format('LLLL') }}</p>
+    <p>Last edited: {{ moment(entry.last_modified).format('LLLL') }}</p>
+    <p>{{ entry.body }}</p>
+    {% if entry.author == current_user %}
+        <a type="button" class="btn btn-primary" href={{ url_for('edit', 
+            username=entry.author.username, id=entry.id) }}>EDIT THIS ENTRY</a>
+        <a role="button" class="btn btn-danger" href={{ url_for('delete', 
+            username=entry.author.username, id=entry.id) }}>DELETE THIS ENTRY</a>
+    {% endif %}
 {% endblock %}
 

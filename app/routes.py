@@ -13,8 +13,99 @@ from app.models import User, Entry
 def index():
     if current_user.is_authenticated:
         return redirect(url_for('write', username=current_user.username))
-    
     return redirect(url_for('login'))
+
+@app.route('/read/<username>/<id>')
+@login_required
+def read(username, id):
+    entry = Entry.query.get(id)
+    author = entry.author.username
+    if username != author:
+        return redirect(url_for('user', username=current_user.username))
+    return render_template('entry.html', entry=entry)
+
+@app.route('/user/<username>', methods=['GET', 'POST'])
+@login_required
+def user(username):
+    entries = current_user.all_entries()
+    return render_template('user_page.html', user=current_user, entries=entries)
+
+@app.route('/write/<username>', methods=['GET', 'POST'])
+@login_required
+def write(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = WriteForm()
+    if form.validate_on_submit():
+        entry = Entry(title=form.title.data, body=form.body.data, author=user)
+        db.session.add(entry)
+        db.session.commit()
+        return redirect(url_for('write', username=username))
+
+    entries = current_user.all_entries()
+    return render_template('write.html', title='Write', user=user, form=form,
+                            entries=entries)
+
+@app.route('/edit/<username>/<id>', methods=['GET', 'POST'])
+@login_required
+def edit(username, id):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = WriteForm()
+    entry = Entry.query.get(id)
+    author = entry.author.username
+    if username != current_user.username or username != author:
+        return redirect(url_for('user', username=current_user.username))
+    if form.validate_on_submit():
+        entry.set_title(form.title.data)
+        entry.set_body(form.body.data)
+        entry.was_edited()
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('read', username=current_user.username, id=id))
+    elif request.method == 'GET':
+        form.title.data = entry.title
+        form.body.data = entry.body
+    return render_template('edit.html', title='Edit Entry', form=form)
+
+@app.route('/delete/<username>/<id>')
+@login_required
+def delete(username, id):
+    user = User.query.filter_by(username=username).first_or_404()
+    entry = Entry.query.get(id)
+    author = entry.author.username
+    if username != current_user.username or username != author:
+        return redirect(url_for('user', username=current_user.username))
+    db.session.delete(entry)
+    db.session.commit()
+    if entry.title:
+        flash('Entry "{}" has been deleted'.format(entry.title))
+    else:
+        flash('Entry deleted')
+    return redirect(url_for('user', username=current_user.username))
+
+@app.route('/follow/<username>')
+@login_required
+def follow(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash('User {} not found.'.format(username))
+        return redirect(url_for('index'))
+
+@app.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm(current_user.username)
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('edit_profile'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.about_me.data = current_user.about_me
+    return render_template('edit_profile.html', title='Edit Profile',
+                           form=form)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -54,72 +145,12 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
-        return redirect(url_for('login'))
-
-    return render_template('register.html', title='Register', form=form)
-
-
-@app.route('/user/<username>', methods=['GET', 'POST'])
-@login_required
-def user(username):
-    entries = current_user.last_three_entries()
-#    page = request.args.get('page', 1, type=int)
-#    entries = 
-    return render_template('user_page.html', user=current_user, entries=entries)
-
-@app.route('/user/write/<username>', methods=['GET', 'POST'])
-@login_required
-def write(username):
-    user = User.query.filter_by(username=username).first_or_404()
-    form = WriteForm()
-    if form.validate_on_submit():
-        entry = Entry(title=form.title.data, entry=form.entry.data, author=user)
-        db.session.add(entry)
-        db.session.commit()
-
-    entries = current_user.last_three_entries()
-
-    return render_template('write.html', title='Write', user=user, form=form,
-                            entries=entries)
-
-@app.route('/read/<id>')
-@login_required
-def read(id):
-    entry = Entry.query.get(id)
-    return render_template('entry.html', entry=entry)
-
-@app.route('/follow/<username>')
-@login_required
-def follow(username):
-    user = User.query.filter_by(username=username).first()
-    if user is None:
-        flash('User {} not found.'.format(username))
         return redirect(url_for('index'))
 
-# view an entry of your own
-
-# @app.route('/user/<username>/<entry>')
-
+    return render_template('register.html', title='Register', form=form)
 
 @app.before_request
 def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
-
-@app.route('/edit_profile', methods=['GET', 'POST'])
-@login_required
-def edit_profile():
-    form = EditProfileForm(current_user.username)
-    if form.validate_on_submit():
-        current_user.username = form.username.data
-        current_user.about_me = form.about_me.data
-        db.session.commit()
-        flash('Your changes have been saved.')
-        return redirect(url_for('edit_profile'))
-    elif request.method == 'GET':
-        form.username.data = current_user.username
-        form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', title='Edit Profile',
-                           form=form)
-

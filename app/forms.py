@@ -44,5 +44,5 @@ class EditProfileForm(FlaskForm):
 
 class WriteForm(FlaskForm):
     title = StringField('Title')
-    entry = TextAreaField('Entry', validators=[DataRequired()])
+    body = TextAreaField('Entry', validators=[DataRequired()])
     submit = SubmitField('Submit')

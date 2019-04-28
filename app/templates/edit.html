@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block app_content %}
+    <h1>Edit Entry</h1>
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <p>
@@ -16,7 +17,4 @@
         </p>
         <p>{{ form.submit() }}</p>
     </form>
-    {% for entry in entries %}
-        {% include '_entry.html' %}
-    {% endfor %}
 {% endblock %}

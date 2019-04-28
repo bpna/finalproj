@@ -27,23 +27,34 @@ class User(UserMixin, db.Model):
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
                 digest, size)
 
-    def last_three_entries(self):
+    def all_entries(self):
         return Entry.query.filter_by(user_id=self.id)
 #        return Entry.query.order_by(Entry.time.desc()).filter(
 #                Entry.user_id == self.id).limit(3).all()
 
-#    def my_posts(self):
-#        return Entry.query.
+    def entry(self, key):
+        return entries
 
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), index=True, default='untitled')
-    entry = db.Column(db.Text)
-    time = db.Column(db.DateTime, default=datetime.utcnow)
+    body = db.Column(db.Text)
+    created = db.Column(db.DateTime, default=datetime.utcnow)
+    last_modified = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return '<Entry {}\n{}\n\n{}>\n'.format(self.time, self.title, self.entry)
+        return '<Entry {}\n{}\n\n{}>\n'.format(self.time, self.last_edited,
+                                               self.title, self.entry)
+
+    def set_title(self, new_title):
+        self.title = new_title
+
+    def set_body(self, new_entry):
+        self.entry = new_entry
+
+    def was_edited(self):
+        self.last_edited = datetime.utcnow()
 
 @login.user_loader
 def load_user(id):
