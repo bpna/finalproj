@@ -2,9 +2,9 @@
     <tr valign="top">
         <td>
             <div class="entry" style="position: relative">
-                <div style="position: relative"><a href="{{ url_for('read', username=entry.author.username, id=entry.id) }}">{{ moment(entry.time).format('LLLL') }}</a></div>
+                <div style="position: relative"><a href="{{ url_for('read', username=entry.author.username, id=entry.id) }}">{{ moment(entry.last_modified).format('LLLL') }}</a></div>
                 <div>{{ entry.title }}</div>
-                <div>{{ entry.entry }}</div>
+                <div>{{ entry.body }}</div>
             </div>
         </td>
     </tr>

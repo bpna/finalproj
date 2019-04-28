@@ -3,9 +3,9 @@
 {% block app_content %}
     <h1>{{ entry.title }}</h1>
     <h2>By: {{ entry.author.username }}</h2>
-    <p>Created: {{ moment(entry.time).format('LLLL') }}</p>
-    <p>Last edited: {{ moment(entry.last_edited).format('LLLL') }}</p>
-    <p>{{ entry.entry }}</p>
+    <p>Created: {{ moment(entry.created).format('LLLL') }}</p>
+    <p>Last edited: {{ moment(entry.last_modified).format('LLLL') }}</p>
+    <p>{{ entry.body }}</p>
     {% if entry.author == current_user %}
         <a type="button" class="btn btn-primary" href={{ url_for('edit', 
             username=entry.author.username, id=entry.id) }}>EDIT THIS ENTRY</a>

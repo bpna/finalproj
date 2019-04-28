@@ -38,9 +38,9 @@ class User(UserMixin, db.Model):
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), index=True, default='untitled')
-    entry = db.Column(db.Text)
-    time = db.Column(db.DateTime, default=datetime.utcnow)
-    last_edited = db.Column(db.DateTime, default=datetime.utcnow)
+    body = db.Column(db.Text)
+    created = db.Column(db.DateTime, default=datetime.utcnow)
+    last_modified = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
@@ -50,7 +50,7 @@ class Entry(db.Model):
     def set_title(self, new_title):
         self.title = new_title
 
-    def set_entry(self, new_entry):
+    def set_body(self, new_entry):
         self.entry = new_entry
 
     def was_edited(self):

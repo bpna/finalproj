@@ -15,16 +15,6 @@ def index():
         return redirect(url_for('write', username=current_user.username))
     return redirect(url_for('login'))
 
-@app.route('/nowit/<username>/<id>')
-def nowit(username, id):
-    user = User.query.filter_by(username=username).first()
-    if user == None:
-        return render_template('user_dne.html', u=username)
-    entry = User.query.filter_by(username=username, id=id).first()
-    print(entry)
-    wits = entry.witnesses
-    return render_template('no_wit_left_for_this_content.html', wits=wits)
-
 @app.route('/read/<username>/<id>')
 @login_required
 def read(username, id):
@@ -46,7 +36,7 @@ def write(username):
     user = User.query.filter_by(username=username).first_or_404()
     form = WriteForm()
     if form.validate_on_submit():
-        entry = Entry(title=form.title.data, entry=form.entry.data, author=user)
+        entry = Entry(title=form.title.data, body=form.body.data, author=user)
         db.session.add(entry)
         db.session.commit()
         return redirect(url_for('write', username=username))
@@ -66,14 +56,14 @@ def edit(username, id):
         return redirect(url_for('user', username=current_user.username))
     if form.validate_on_submit():
         entry.set_title(form.title.data)
-        entry.set_entry(form.entry.data)
+        entry.set_body(form.body.data)
         entry.was_edited()
         db.session.commit()
         flash('Your changes have been saved.')
         return redirect(url_for('read', username=current_user.username, id=id))
     elif request.method == 'GET':
         form.title.data = entry.title
-        form.entry.data = entry.entry
+        form.body.data = entry.body
     return render_template('edit.html', title='Edit Entry', form=form)
 
 @app.route('/delete/<username>/<id>')

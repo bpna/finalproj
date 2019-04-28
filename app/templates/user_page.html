@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <h1>Hi {{ user.username }}, here are your last posts</h1>
+    <h1>Hi {{ user.username }}, here are your last entries</h1>
     {% for entry in entries %}
         {% include '_entry.html' %}
     {% endfor %}

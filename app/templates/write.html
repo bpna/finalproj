@@ -8,9 +8,9 @@
             {{ form.title(size=80) }}<br>
         </p>
         <p>
-            {{ form.entry.label }}<br>
-            {{ form.entry(cols=80, rows=20) }}<br>
-            {% for error in form.entry.errors %}
+            {{ form.body.label }}<br>
+            {{ form.body(cols=80, rows=20) }}<br>
+            {% for error in form.body.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
