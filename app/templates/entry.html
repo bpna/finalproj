@@ -3,11 +3,14 @@
 {% block app_content %}
     <h1>{{ entry.title }}</h1>
     <h2>By: {{ entry.author.username }}</h2>
-    <p>{{ moment(entry.time).format('LLLL') }}</p>
+    <p>Created: {{ moment(entry.time).format('LLLL') }}</p>
+    <p>Last edited: {{ moment(entry.last_edited).format('LLLL') }}</p>
     <p>{{ entry.entry }}</p>
     {% if entry.author == current_user %}
-        <a class="btn btn-primary" href={{ url_for('edit', username=entry.author.username, id=entry.id) }} role="button">EDIT THIS ENTRY</a>
-        <a type="button" class="btn btn-danger" href={{ url_for('delete', username=entry.author.username, id=entry.id) }}>DELETE THIS ENTRY</a>
+        <a type="button" class="btn btn-primary" href={{ url_for('edit', 
+            username=entry.author.username, id=entry.id) }}>EDIT THIS ENTRY</a>
+        <a role="button" class="btn btn-danger" href={{ url_for('delete', 
+            username=entry.author.username, id=entry.id) }}>DELETE THIS ENTRY</a>
     {% endif %}
 {% endblock %}
 

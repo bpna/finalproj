@@ -49,6 +49,7 @@ def write(username):
         entry = Entry(title=form.title.data, entry=form.entry.data, author=user)
         db.session.add(entry)
         db.session.commit()
+        return redirect(url_for('write', username=username))
 
     entries = current_user.all_entries()
     return render_template('write.html', title='Write', user=user, form=form,
