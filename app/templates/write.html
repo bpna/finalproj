@@ -1,22 +1,27 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <form action="" method="post">
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.title.label }}<br>
-            {{ form.title(size=80) }}<br>
-        </p>
-        <p>
-            {{ form.body.label }}<br>
-            {{ form.body(cols=80, rows=20) }}<br>
-            {% for error in form.body.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
-    {% for entry in entries %}
-        {% include '_entry.html' %}
-    {% endfor %}
+<div class="row">
+    <div class="coll-xs-12 col-md-8">
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.title.label }}<br>
+                {{ form.title(size=80) }}<br>
+            </p>
+            <p>
+                {{ form.body.label }}<br>
+                {{ form.body(cols=80, rows=20) }}<br>
+                {% for error in form.body.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>{{ form.submit() }}</p>
+        </form>
+    </div>
+    <div class="col-xs-6 col-md-4">
+        {% for entry in entries %}
+            {% include '_entry.html' %}
+        {% endfor %}
+    </div>
 {% endblock %}

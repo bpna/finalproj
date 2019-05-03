@@ -1,11 +1,12 @@
-<table>
-    <tr valign="top">
-        <td>
-            <div class="entry" style="position: relative">
-                <div style="position: relative"><a href="{{ url_for('read', username=entry.author.username, id=entry.id) }}">{{ moment(entry.last_modified).format('LLLL') }}</a></div>
-                <div>{{ entry.title }}</div>
-                <div>{{ entry.body }}</div>
+            <div class="card" style="width: 40rem;"> 
+                <div class="card-body">
+                    {% if entry.title %}
+                    <h5 class="font-weight-bold"><b>{{ entry.title }}</b></h5>
+                    {% else %}
+                    <h5 class="card-title"><b>Untitled</b></h5>
+                    {% endif %}
+                    <h6 class="card-subtitle mb-2 test-muted"><a href="{{ url_for('read', username=entry.author.username, id=entry.id) }}">
+                                                                       {{ moment(entry.last_modified).format('LLLL') }}</a></h6>
+                    <p id="entry-body">{{ entry.body }}</p>
+                </div>
             </div>
-        </td>
-    </tr>
-</table>
