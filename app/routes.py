@@ -33,6 +33,8 @@ def user(username):
 @app.route('/write/<username>', methods=['GET', 'POST'])
 @login_required
 def write(username):
+    if current_user.username != username:
+        return redirect(url_for('write', username=current_user.username))
     user = User.query.filter_by(username=username).first_or_404()
     form = WriteForm()
     if form.validate_on_submit():

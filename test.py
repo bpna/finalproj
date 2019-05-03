@@ -96,7 +96,7 @@ if __name__ == "__main__":
         print("ERROR Incorrect page returned after login")
     
     delete_all_entries(driver)
-    if (len(sys.argv) == 0):
+    if (len(sys.argv) == 1):
         entries = write_x_entries(driver, 10, 1000, nice_random_string)
     else:
         entries = write_x_entries(driver, int(sys.argv[1]), int(sys.argv[2]),
