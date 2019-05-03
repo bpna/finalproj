@@ -1,5 +1,10 @@
 {% extends 'bootstrap/base.html' %}
 
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='static/bootstrap.css') }}">
+{% endblock %}
+
 {% block title %}
     {% if title %}{{ title }} - JournalPro{% else %}Welcome to Journalpro{% endif %}
 {% endblock %}

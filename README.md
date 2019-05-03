@@ -16,20 +16,24 @@ Then, in your local clone run:
 
 ```
     pip3 install virtualenv
-    . venv/bin/activate or source venv/bin/activate
+    source venv/bin/activate
     pip3 install -r requirements.txt
     flask run
 ```
 
-The first and second steps are necessary to create the virtual environment which contains the necessary python packages, which are listed in `requirements.txt`. 
+Then visit http://127.0.0.1:5000 in your Web browser.
+
+The first and second commands are necessary to create the virtual environment which contains the necessary python packages, which are listed in `requirements.txt`. 
 *THIS STEP IS IMPORTANT* because it prevents conflicts with other versions of the same packages required by different applications system-wide, and maintains application stability when these packages are upgraded system-wide.
 To exit the virtual environment, use `deactivate`.
+
+To run the application in development mode, allowing stack trace output inside your Web browser, add `FLASK_ENV=development` to `.flaskenv`.
 
 ## Description
 
 JournalPro is a journaling and publishing application for avid writers. On login, users are presented with an entry prompt that allows them to quickly and easily make entries separated by the click of a button. Entries are private by default. Project work focused entirely on front-end development, as ease of use is critical for eventual adoption of such a tool.
 
-Future front-end work will enable easy sharing of content within the application, allowing followers like the traditional social media model, and outside the application by presenting a REST interface.
+Future front-end work will enable easy sharing of content within the application by allowing followers like the traditional social media model, and outside the application by presenting a REST interface.
 
 To support the goal of total privacy, future back-end work will support a distributed network model using a DHT. 
 
@@ -64,6 +68,4 @@ To support the goal of total privacy, future back-end work will support a distri
 * Create page to see followed users
 * Add MAKE PUBLIC button to entries
 * /user/<username> should display only entries marked as PUBLIC
-
-Issues:
 * Outline buttons (class="btn btn-outline-primary") are not loading properly even when using local bootstrap files

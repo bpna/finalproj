@@ -14,3 +14,4 @@ class Config(object):
     ADMINS = ['pkinsella1@gmail.com']
     ENTRIES_PER_PAGE = 6
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
+    BOOTSTRAP_USE_MINIFIED = False
