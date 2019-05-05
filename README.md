@@ -41,14 +41,15 @@ To support the goal of total privacy, future back-end work will support a distri
 
 ### Features in Development:
 * ~~Add delete and edit entry options to complete basic CRUD model for entries~~
+* Text wrap
 * Share entries by email
-* Enable triple- or double-newline entry creation on /write/<username> 
-* Add follow option, feed to show new posts from followed users, make public option for entries
+* Enable triple- or double-newline entry separation on /write/<username> 
 * File upload feature, text box/dropdown for entry time
+* Add follow option, feed to show new posts from followed users, make public option for entries
 
 ### TODOs:
 * /index should display a description of the site's purpose, with register and login buttons
-* base template needs a Write link at the top to go to /write/<username>
+* ~~Base template needs a Write link at the top to go to /write/<username>~~
 * ~~After submitting an entry, the form should be cleared on /write/<username>~~
 * ~~Add EDIT THIS ENTRY button to entries~~
 * ~~The EDIT THIS ENTRY link for an entry should be a button, not a link~~
@@ -69,3 +70,8 @@ To support the goal of total privacy, future back-end work will support a distri
 * Add MAKE PUBLIC button to entries
 * /user/<username> should display only entries marked as PUBLIC
 * Outline buttons (class="btn btn-outline-primary") are not loading properly even when using local bootstrap files
+
+
+### Bugs
+* Creating an entry longer than some number of characters and submitting, lost the end of the entry. Only the first 5439 characters were written.
+* ~~App currently 404's on every GET request for /static/static/bootstrap.css~~

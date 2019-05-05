@@ -1,3 +1,5 @@
+#!/usr/bin/python3.7
+
 from selenium import webdriver as wd
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
