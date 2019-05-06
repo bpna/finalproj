@@ -75,3 +75,5 @@ To support the goal of total privacy, future back-end work will support a distri
 ### Bugs
 * Creating an entry longer than some number of characters and submitting, lost the end of the entry. Only the first 5439 characters were written.
 * ~~App currently 404's on every GET request for /static/static/bootstrap.css~~
+* ~~App styles elements strangely (shrunken dropdown button, sizing a little too large~~
+* App does not give dropdown options when clicking the list icon button

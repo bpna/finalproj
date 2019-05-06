@@ -11,6 +11,7 @@ from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
 
 app = Flask(__name__)
+# app.run(host='0.0.0.0')
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
